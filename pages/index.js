@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
-import styles from '@/styles/Home.module.css'
 import Header from "./components/Header"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Carousel, Container} from 'react-bootstrap';
@@ -17,7 +16,7 @@ export default function Home() {
         <Container fluid={true}>
             <Header></Header>
         </Container>
-        <CouponAlert couponCode={lashonda} percentage="15"></CouponAlert>
+        <CouponAlert code="karts" percentage="5" firstTime={true}></CouponAlert>
         <Container>
             <Banner></Banner>
         </Container>
