@@ -13,9 +13,9 @@ const inter = Inter({ subsets: ['latin'] })
 export default function Home() {
   return (
     <>
-        <Container fluid={true}>
-            <Header></Header>
-        </Container>
+
+        <Header></Header>
+
         <CouponAlert code="karts" percentage="5" firstTime={true}></CouponAlert>
         <Container>
             <Banner></Banner>
@@ -23,9 +23,9 @@ export default function Home() {
         <Container>
             <ItemCarousel></ItemCarousel>
         </Container>
-        <Container fluid={true}>
-            <Footer></Footer>
-        </Container>
+
+        <Footer></Footer>
+
     </>
   )
 }
