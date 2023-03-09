@@ -4,6 +4,9 @@ import Image from 'next/image';
 const placeholderImage = '/../public/placeholder.png';
 
 function ItemCarousel() {
+    const imageStyle = {
+        objectFit: "contain"
+    };
     return (
         <div className="bg-light">
             <Container className="mt-5">
@@ -19,27 +22,27 @@ function ItemCarousel() {
                         >
                             <Carousel.Item>
                                 <div className="d-flex justify-content-center">
-                                    <Image src={placeholderImage} alt="placeholder image" width={600} height={400} />
+                                    <Image src={placeholderImage} alt="placeholder image" width={600} height={400} style={imageStyle}/>
                                 </div>
                             </Carousel.Item>
                             <Carousel.Item>
                                 <div className="d-flex justify-content-center">
-                                    <Image src={placeholderImage} alt="placeholder image" width={600} height={400} />
+                                    <Image src={placeholderImage} alt="placeholder image" width={600} height={400} style={imageStyle} />
                                 </div>
                             </Carousel.Item>
                             <Carousel.Item>
                                 <div className="d-flex justify-content-center">
-                                    <Image src={placeholderImage} alt="placeholder image" width={600} height={400} />
+                                    <Image src={placeholderImage} alt="placeholder image" width={600} height={400} style={imageStyle}/>
                                 </div>
                             </Carousel.Item>
                             <Carousel.Item>
                                 <div className="d-flex justify-content-center">
-                                    <Image src={placeholderImage} alt="placeholder image" width={600} height={400} />
+                                    <Image src={placeholderImage} alt="placeholder image" width={600} height={400} style={imageStyle}/>
                                 </div>
                             </Carousel.Item>
                             <Carousel.Item>
                                 <div className="d-flex justify-content-center">
-                                    <Image src={placeholderImage} alt="placeholder image" width={600} height={400} />
+                                    <Image src={placeholderImage} alt="placeholder image" width={600} height={400} style={imageStyle}/>
                                 </div>
                             </Carousel.Item>
                         </Carousel>

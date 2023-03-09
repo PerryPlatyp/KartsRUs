@@ -24,7 +24,11 @@ function Banner() {
                                 alt="product image"
                                 width={500}
                                 height={500}
-                                objectFit="contain"
+                                style={
+                                    {
+                                        objectFit: "contain"
+                                    }
+                            }
                             />
                         </div>
                     </Col>
