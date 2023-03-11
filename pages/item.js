@@ -9,6 +9,7 @@ import { Spinner } from 'react-bootstrap';
 import { RecurringAlert } from './components/RecurringAlert';
 
 let priceInCents;
+let interval;
 const Item = () => {
     const [product, setProduct] = useState(null);
     const [price, setPrice] = useState(null);
@@ -25,6 +26,11 @@ const Item = () => {
             priceInCents = await getPrice(defaultPrice);
             const formattedPrice = (priceInCents.unit_amount / 100).toFixed(2);
             setPrice(formattedPrice);
+            if (priceInCents.type === 'recurring') {
+                interval = priceInCents.recurring.interval;
+            }else{
+                interval = null;
+            }
         }
 
         if (id) {
@@ -66,8 +72,11 @@ const Item = () => {
                             <Card.Body>
                                 <Card.Title>{product.name}</Card.Title>
                                 <Card.Text>{product.description}</Card.Text>
-                                {/* Display the formatted price */}
-                                <Card.Text>${price}</Card.Text>
+                                {/* Display the formatted price, if recurring is the kind then add per {recurring} to the price */}
+                                <Card.Text>
+                                    {price}
+                                    {isRecurringPayment ? ` per ${interval}` : null}
+                                </Card.Text>
                                 {/* Add a button to add the item to the cart */}
                                 <Button>Add to Cart</Button>
                             </Card.Body>
