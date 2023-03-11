@@ -6,13 +6,18 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { Spinner } from 'react-bootstrap';
-import { RecurringAlert } from './components/RecurringAlert';
+import { useCookies } from "react-cookie";
 
-let priceInCents;
-let interval;
+
 const Item = () => {
     const [product, setProduct] = useState(null);
     const [price, setPrice] = useState(null);
+    const [buttonText, setButtonText] = useState("Add to Cart");
+    const [isDisabled, setIsDisabled] = useState(false);
+    const [isAdded, setIsAdded] = useState(false);
+    const [cookies, setCookie] = useCookies([]);
+    const [priceInCents, setPriceInCents] = useState(null);
+    const [interval, setInterval] = useState(null);
     const router = useRouter();
     const { id } = router.query;
 
@@ -23,13 +28,14 @@ const Item = () => {
 
             // Get the price in cents and format it to a string with two decimal places
             const defaultPrice = products[0].default_price;
-            priceInCents = await getPrice(defaultPrice);
+            const priceInCents = await getPrice(defaultPrice);
+            setPriceInCents(priceInCents);
             const formattedPrice = (priceInCents.unit_amount / 100).toFixed(2);
             setPrice(formattedPrice);
             if (priceInCents.type === 'recurring') {
-                interval = priceInCents.recurring.interval;
-            }else{
-                interval = null;
+                setInterval(priceInCents.recurring.interval);
+            } else {
+                setInterval(null);
             }
         }
 
@@ -37,6 +43,31 @@ const Item = () => {
             fetchProduct();
         }
     }, [id]);
+
+    const addToCart = () => {
+        // Add the product ID to the cookies
+        const cartItems = cookies.cartItems || [];
+        cartItems.push(id);
+        setCookie("cartItems", cartItems);
+
+        // Set the button text to "Added" and disable the button for 5 seconds
+        setButtonText("Added");
+        setIsAdded(true);
+        setIsDisabled(true);
+        setTimeout(() => {
+            setButtonText("Add to Cart");
+            setIsAdded(false);
+            setIsDisabled(false);
+        }, 5000);
+    };
+
+    // Conditionally render an alert if the price is a recurring payment
+    const isRecurringPayment = priceInCents?.type === 'recurring';
+    const recurringPaymentAlert = isRecurringPayment ? (
+        <Alert variant="warning">
+            This is a recurring payment and not a one-time payment.
+        </Alert>
+    ) : null;
 
     // Show a loading message while the product is being fetched
     if (!product) {
@@ -47,14 +78,6 @@ const Item = () => {
         );
     }
 
-    // Conditionally render an alert if the price is a recurring payment
-    const isRecurringPayment = priceInCents?.type === 'recurring';
-    const recurringPaymentAlert = isRecurringPayment ? (
-        <Alert variant="warning">
-            This is a recurring payment and not a one-time payment.
-        </Alert>
-    ) : null;
-
     return (
         <>
             <Header />
@@ -64,7 +87,16 @@ const Item = () => {
                 <div className="row my-4">
                     <div className="col-md-6">
                         <Card>
-                            <Card.Img variant="top" src={product.images[0]} />
+                            {product.images[0] ? (
+                                <Card.Img variant="top" src={product.images[0]} />
+                            ) : (
+                                <div
+                                    className="d-flex justify-content-center align-items-center"
+                                    style={{ height: 400 }}
+                                >
+                                    <span>No image available</span>
+                                </div>
+                            )}
                         </Card>
                     </div>
                     <div className="col-md-6">
@@ -78,7 +110,12 @@ const Item = () => {
                                     {isRecurringPayment ? ` per ${interval}` : null}
                                 </Card.Text>
                                 {/* Add a button to add the item to the cart */}
-                                <Button>Add to Cart</Button>
+                                <Button
+                                    disabled={isAdded || isDisabled}
+                                    onClick={addToCart}
+                                >
+                                    {buttonText}
+                                </Button>
                             </Card.Body>
                         </Card>
                     </div>
@@ -87,6 +124,6 @@ const Item = () => {
             <Footer />
         </>
     );
-};
 
+};
 export default Item;

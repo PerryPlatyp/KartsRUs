@@ -48,17 +48,25 @@ const Shop = () => {
                         <input type="text" className="form-control" placeholder="Search products" onChange={searchProducts} />
                     </div>
                 </div>
+                {searchResults.length === 0 && <p>No items found</p>}
                 <div className="row">
                     {searchResults.map((product) => (
                         <div key={product.id} className="col-md-4 mb-4">
                             <Card>
-                                <Card.Img
-                                    variant="top"
-                                    src={product.images[0]}
-                                    className="mx-auto"
-                                    style={{ width: "300px", height: "500px", objectFit: "contain" }}
-                                />
-
+                                {product.images[0] ? (
+                                    <Card.Img
+                                        variant="top"
+                                        src={product.images[0]}
+                                        className="mx-auto"
+                                        style={{ width: "300px", height: "500px", objectFit: "contain" }}
+                                    />
+                                ) : (
+                                    <div className="mx-auto" style={{width: "300px", height: "500px"}}>
+                                        <div className="d-flex justify-content-center align-items-center h-100 w-100">
+                                            <span><i>No image available</i></span>
+                                        </div>
+                                    </div>
+                                )}
                                 <Card.Body>
                                     <Card.Title>{product.name}</Card.Title>
                                     <Card.Text>{product.description}</Card.Text>
@@ -68,6 +76,9 @@ const Shop = () => {
                                     </Link>
                                 </Card.Body>
                             </Card>
+
+
+
                         </div>
                     ))}
                 </div>

@@ -3,8 +3,8 @@ import { Container, Row, Col } from 'react-bootstrap';
 
 function Footer() {
     return (
-        <footer className="bg-dark text-white py-5">
-            <Container>
+        <footer className="bg-dark text-white py-5" style={{ marginTop: 'auto' }}>
+            <Container className="d-flex justify-content-center">
                 <Row>
                     <Col md={4}>
                         <h5>Follow Us</h5>
